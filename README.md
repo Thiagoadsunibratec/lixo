@@ -1,205 +1,2039 @@
-Sublime Text 2/3 Markdown Preview
-=================================
+# Jointjs para integração com o ScriptCase
 
-Preview and build your markdown files quickly in your web browser from sublime text 2/3. 
+![Tela de exemplo](./tela.png)
 
-You can use builtin [python-markdown][10] parser or use the [github markdown API][5] for the conversion.
+Este é um código PHP feito para permitir adicionar a classe JavaScript 
+Jointjs de forma simples a aplicações feitas em ScriptCase.
 
-**NOTE:** If you choose the GitHub API for conversion (set parser: github in your settings), your code will be sent through https to github for live conversion. You'll have [Github flavored markdown][6], syntax highlighting and EMOJI support for free :heart: :octocat: :gift:. If you make more than 60 calls a day, be sure to set your GitHub API key in the settings :). You can also get most of this in the default Markdown parser with by enabling certain extensions; see "[Parsing Github Flavored Markdown](#parsing-github-flavored-markdown-)"" below for more information.
+Para esta primeira versão, você ira necessitar de um arquivo de fonte
+true type para que os cálculos de tamanho possam ser feitos.
 
-**LINUX users:** If you want to use GitHub API for conversion, you'll need to have a custom Python install that includes python-ssl as its not built in the Sublime Text 2 Linux package. see [@dusteye comment][8]. If you use a custom window manager, also be sure to set a `BROWSER` environment variable. see [@PPvG comments][9]
+## Instalação
 
-## Features :
+Abra o arquivo index.php e procura pelos dois comentários, "Código PHP a 
+ser copiado e colado - início/fim" e copie este trecho de código em sua
+aplicação ScriptCase.
 
- - Markdown preview using the [Python-markdown][10] or the Github API just choose select the build commands.
- - Syntax highlighting via Pygments. See "[Configuring Pygments](#configuring-pygments)" for more info.
- - Build markdown file using Sublime Text build system. The build parser are config via the `"parser"` config.
- - Browser preview auto reload on save if you have the [ST2 LiveReload plugin][7] installed.
- - Builtin parser : supports `abbr`, `attr_list`, `def_list`, `fenced_code`, `footnotes`, `tables`, `smart_strong`, `smarty`,  `wikilinks`, `meta`, `sane_lists`, `codehilite`, `nl2br`, and `toc` markdown extensions.
- - CSS search path for local and build-in CSS files (always enabled) and/or CSS overriding if you need
- - YAML support thanks to @tommi
- - Clipboard selection and copy to clipboard thanks to @hexatrope
- - MathJax support : \\\\(\frac{\pi}{2}\\\\) thanks to @bps10
- - HTML template customisation thanks to @hozaka
- - Embed images as base64 (see [settings][settings] file for more info)
- - Strip out multimarkdown critic marks from either Githubs or Python Markdown input source (see [settings][settings] file for more info)
- - 3rd party extensions for the Python Markdown parser:
-
-    | Extension | Documentation |
-    |-----------|---------------|
-    | magiclink | Find and convert HTML links and email address to links ([MagicLink Documentation](http://facelessuser.github.io/pymdown-extensions/extensions/magiclink/)). |
-    | delete | Surround inline text with `~~strike through~~` to get del tags ~~strike through~~. |
-    | insert | Surround inline text with `^^underlined^^` to get ins tags <ins>underlined</ins>. |
-    | tasklist | Github Flavored Markdown tasklists ([Tasklist Documentation](http://facelessuser.github.io/pymdown-extensions/extensions/tasklist/)). |
-    | githubemoji | Support for Github Flavored Markdown emojis ([GithubEmoji Documentation](http://facelessuser.github.io/pymdown-extensions/extensions/githubemoji/)). |
-    | headeranchor | Github Flavored Markdown style header anchors ([HeaderAnchor Documentation](http://facelessuser.github.io/pymdown-extensions/extensions/headeranchor/)). |
-    | github | A convenience extension to add: `magiclink`, `delete`, `tasklist`, `githubemoji`, `headeranchor`, `superfences`, and `nl2br` to parse and display Markdown in a github-ish way.  It is recommed to pair `github` with `extra` and `codehilite` (with language guessing off) to parse close to github's way.  Be aware of what extensions `github` loads, because you should not load extensions more than once. |
-    | progressbar | Create progress bars ([ProgressBar Documentation](http://facelessuser.github.io/pymdown-extensions/extensions/progressbar/)). |
-    | superfences | Allow fenced blocks to be nested under lists, blockquotes, etc. and add special UML diagram blocks ([SuperFences Documentation](http://facelessuser.github.io/pymdown-extensions/extensions/superfences/)). |
-
-## Installation :
-
-### Using [Package Control][3] (*Recommended*)
-
-For all Sublime Text 2/3 users we recommend install via [Package Control][3].
-
-1. [Install][11] Package Control if you haven't yet.
-2. Use <kbd>cmd</kbd>+<kbd>shift</kbd>+<kbd>P</kbd> then `Package Control: Install Package`
-3. Look for `Markdown Preview` and install it.
-
-### Manual Install
-
-1. Click the `Preferences > Browse Packages…` menu
-2. Browse up a folder and then into the `Installed Packages/` folder
-3. Download [zip package][12] rename it to `Markdown Preview.sublime-package` and copy it into the `Installed Packages/` directory
-4. Restart Sublime Text
-
-## Usage :
-
-### To preview :
-
- - optionally select some of your markdown for conversion
- - use <kbd>cmd</kbd>+<kbd>shift</kbd>+<kbd>P</kbd> then `Markdown Preview` to show the follow commands (you will be prompted to select which parser you prefer):
-	- Markdown Preview: Preview in Browser
-	- Markdown Preview: Export HTML in Sublime Text
-	- Markdown Preview: Copy to Clipboard
-	- Markdown Preview: Open Markdown Cheat sheet
- - or bind some key in your user key binding, using a line like this one:
-   `{ "keys": ["alt+m"], "command": "markdown_preview", "args": {"target": "browser", "parser":"markdown"} },` for a specific parser and target or `{ "keys": ["alt+m"], "command": "markdown_preview_select", "args": {"target": "browser"} },` to bring up the quick panel to select enabled parsers for a given target.
- - once converted a first time, the output HTML will be updated on each file save (with LiveReload plugin)
-
-### Enabling Other External Markdown Parsers :
-
-External parser commands and arguments should first be mapped to a name.  The path to the binary should be first, followed by flags etc.
-
-```js
-    "markdown_binary_map": {
-        "multimarkdown": ["/usr/local/bin/multimarkdown"]
-    },
+Adicione os links das classes e css necessários ao código html. Página HTML.
+```
+<link rel="stylesheet" type="text/css" href="./css/dev/joint.css" />
+<script src="./js/jquery.min.js"></script>
+<script src="./js/lodash.min.js"></script>
+<script src="./js/backbone-min.js"></script>
+<script src="./js/dev/joint.js"></script>
 ```
 
-Then the name can be placed in `enabled_parsers` to enable use of the new parser.
-
-```js
-    "enabled_parsers": ["markdown", "github", "multimarkdown"],
+Monte um script onReady() com a ajuda do JQuery. Página HTML.
+```
+<script>
+$(document).ready(
+function() {
+<?php print makeOnReadyFunction( $data, $setup, $listElementsToAddLArr, $listLinksIdsLArr ); ?>
+});
+</script>
 ```
 
-### To build :
+Configure a parte visual de sua aplicação com os valores padrão. Script PHP.
+```
+$fontSizeDefaultLUInt = 12;
+$spaceWidthBetweenTextAndBorderUInt = 50;
+$spaceHeightBetweenTextAndBorder = 10;
+$setup = array(
+"fontFamily" => "./tahoma.ttf",
+"perspectiveFontSizeDefault" => $fontSizeDefaultLUInt,
+"perspectiveFontColorDefault" => "#555555",
+"perspectiveStrokeDefaultColor" => "#000000",
+"perspectiveFillDefaultColor" => "#DDDDDD",
+"perspectiveStrokeWidth" => 0,
+"perspectiveRx" => 1,
+"perspectiveRy" => 1,
+"perspectiveCircleCx" => 7,
+"perspectiveCircleCy" => 7,
+"perspectiveCircleCR" => 7,
+"perspectiveCircleStroke" => "#000000",
+"perspectiveCircleStrokeWidth" => 2,
+"perspectiveCircleStrokeFill" => "#00FF00",
+"perspectiveSpaceWidthBetweenTextAndBorder" => $spaceWidthBetweenTextAndBorderUInt - 10,
+"perspectiveSpaceHeightBetweenTextAndBorder" => $spaceHeightBetweenTextAndBorder - 10,
+"perspectiveSpaceUpper" => 20,
+"perspectiveSpaceBottom" => 10,
 
- - Just use <kbd>ctrl</kbd>+<kbd>B</kbd> (Windows/Linux) or <kbd>cmd</kbd>+<kbd>B</kbd> (Mac) to build current file.
+"columnsFontSizeDefault" => $fontSizeDefaultLUInt,
+"columnsFontColorDefault" => "#5555FF",
+"columnsStrokeDefaultColor" => "#000000",
+"columnsFillDefaultColor" => "#DDDDDD",
+"columnsStrokeWidth" => 0,
+"columnsRx" => 1,
+"columnsRy" => 1,
+"columnsCircleCx" => 7,
+"columnsCircleCy" => 7,
+"columnsCircleCR" => 7,
+"columnsCircleStroke" => "#000000",
+"columnsCircleStrokeWidth" => 2,
+"columnsCircleStrokeFill" => "#FFFF00",
+"columnsSpaceWidthBetweenTextAndBorder" => $spaceWidthBetweenTextAndBorderUInt - 10,
+"columnsSpaceHeightBetweenTextAndBorder" => $spaceHeightBetweenTextAndBorder - 10,
+"columnsSpaceWidthBetween" => 30,
+"columnsSpaceBottom" => 10,
 
-### To config :
+"objectivesFontSizeDefault" => $fontSizeDefaultLUInt,
+"objectivesFontColorDefault" => "#3498DB",
+"objectivesStrokeDefaultColor" => "#000000",
+"objectivesFillDefaultColor" => "#2C3E50",
+"objectivesStrokeWidth" => 2,
+"objectivesRx" => 1,
+"objectivesRy" => 1,
+"objectivesCircleCx" => 7,
+"objectivesCircleCy" => 7,
+"objectivesCircleCR" => 7,
+"objectivesCircleStroke" => "#000000",
+"objectivesCircleStrokeWidth" => 2,
+"objectivesCircleStrokeFill" => "#00FF00",
+"objectivesSpaceWidthBetween" => 30,
+"objectivesSpaceHeightBetween" => 20,
+"objectivesSpaceWidthBetweenTextAndBorder" => $spaceWidthBetweenTextAndBorderUInt,
+"objectivesSpaceHeightBetweenTextAndBorder" => $spaceHeightBetweenTextAndBorder
 
-Using Sublime Text menu: `Preferences`->`Package Settings`->`Markdown Preview`
-
-- `Settings - User` is where you change your settings for Markdown Preview.
-- `Settings - Default` is a good reference with detailed descriptions for each setting.
-
-### Configuring Pygments
-If you add the codehilite extension manually in the enabled extensions, you can override some of the default settings.
-
-* Turn language guessing *on* or *off* (*on* will highlight fenced blocks even if you don't specify a language)  `codehilite(guess_lang=False)` (True|False).
-* Show line numbers: `codehilite(linenums=True)` (True|False).
-* Change the higlight theme: `codehilite(pygments_style=emacs)`.
-* Inline the CSS: `codehilite(noclasses=True)` (True|False).
-* Use multiple: `codehilite(linenums=True, pygments_style-emacs)`.
-
-See [codehilte page](https://pythonhosted.org/Markdown/extensions/code_hilite.html) for more info.
-
-### Meta Data Support
-When the `meta` extension is enabled (https://pythonhosted.org/Markdown/extensions/meta_data.html), the results will be written to the HTML head in the form `<meta name="key" content="value1,value2">`.  `title` is the one exception, and its content will be written to the title tag in the HTML head.
-
-### YAML Frontmatter Support
-YAML frontmatter can be stripped out and read when `strip_yaml_front_matter` is set to  `true` in the settings file.  In general the, the fronmatter is handled the same as [meta data](#meta-data-support), but if both exist in a file, the YAML keys will override the `meta` extension keys.  There are a few special keys names that won't be handled as html meta data.
-
-#### Special YAML Key Names
-Yaml frontmatter has a few special key names that are used that will not be handled as meta data:
-
-- **basepath**: An absolute path to configure the relative paths for images etc. (for when the markdown is supposed to reference images in a different location.)
-- **references**: Can take a file path or an array of file paths for separate markdown files containing references, footnotes, etc.  Can be an absolute path or relative path.  Relative paths first use the source file's directory, and if the file cannot be found, it will use the `basepath` setting.
-- **destination**: This is an absolute file path or relative file path for when the markdown is saved to html via the build command or the `Save to HTML` command.  Relative paths first use the source file's directory, and if the file cannot be found, it will use the `basepath` setting.
-- **settings**: This is a dictionary where you can override settings that are in the settings file.
-
-#### Example
-```yaml
----
-    # Builtin values
-    references:
-        - references.md
-        - abbreviations.md
-        - footnotes.md
-
-    destination: destination.html
-
-    # Meta Data
-    title: Test Page
-    author:
-        - John Doe
-        - Jane Doe
-
-    # Settings overrides
-    settings:
-        enabled_extensions:
-        - extra
-        - github
-        - toc
-        - headerid
-        - smarty(smart_quotes=False) # smart quotes interferes with attr_list
-        - meta
-        - wikilinks
-        - admonition
-        - codehilite(guess_lang=False,pygments_style=github)
----
+);
 ```
 
-### Parsing Github Flavored Markdown :
-Github Flavored Mardown (GFM) is a very popular markdown.  Markdown Preview can actually handle them in a couple of ways: online and offline.
-
-#### Online :
-Parsing GFM using the online method requires using the Github API as the parser.  It may also require setting `github_mode` to `gfm` to get things like tasklists to render properly.
-
-#### Offline :
-By default almost all extensions are enabled to help with the github feel, but there are some tweaks needed to get the full experience.
-
-GFM does not auto guess language in fenced blocks, but Markdown Preview does this by default.  You can fix this in one of two ways:
-
-1. Disable auto language guessing in the settings file `"guess_language": false,`
-2. Or if you are manually defining extensions: `"enabled_extensions": ["codehilite(guess_lang=False,pygments_style=github)"]`
-
-
-As mentioned earlier, almost all extensions are enabled by default, but as a reference, the minimum extensions that should be enabled are listed below:
-
-```javascript
-	"enabled_extensions": [
-		"extra",
-		"github",
-		"codehilite(guess_lang=False,pygments_style=github)"
-	]
+Monte um array de dados. Script PHP.
+```
+$data = array(
+"link" => array(
+  array(
+    "id" => "unique_id_link_1",
+    "link" => array(
+      "from" => "unique_id_2",
+      "to" => "unique_id_3"
+    )
+  ),
+  array(
+    "id" => "unique_id_link_2",
+    "link" => array(
+      "from" => "unique_id_4",
+      "to" => "unique_id_3"
+    )
+  ),
+  array(
+    "id" => "unique_id_link_3",
+    "link" => array(
+      "from" => "unique_id_12",
+      "to" => "unique_id_4"
+    )
+  ),
+  array(
+    "id" => "unique_id_link_4",
+    "link" => array(
+      "from" => "unique_id_11",
+      "to" => "unique_id_12"
+    )
+  ),
+  array(
+    "id" => "unique_id_link_5",
+    "link" => array(
+      "from" => "unique_id_13",
+      "to" => "unique_id_4"
+    )
+  ),
+  array(
+    "id" => "unique_id_link_6",
+    "link" => array(
+      "from" => "unique_id_20",
+      "to" => "unique_id_2"
+    )
+  ),
+  array(
+    "id" => "unique_id_link_7",
+    "link" => array(
+      "from" => "unique_id_20",
+      "to" => "unique_id_12"
+    )
+  ),
+  array(
+    "id" => "unique_id_link_8",
+    "link" => array(
+      "from" => "unique_id_21",
+      "to" => "unique_id_12"
+    )
+  ),
+  array(
+    "id" => "unique_id_link_9",
+    "link" => array(
+      "from" => "unique_id_22",
+      "to" => "unique_id_12"
+    )
+  ),
+  array(
+    "id" => "unique_id_link_10",
+    "link" => array(
+      "from" => "unique_id_23",
+      "to" => "unique_id_12"
+    )
+  ),
+  array(
+    "id" => "unique_id_link_11",
+    "link" => array(
+      "from" => "unique_id_13",
+      "to" => "unique_id_12"
+    )
+  )
+),
+"float" => array(
+  array(
+    "id" => "unique_id_float_1",
+    "text" => "Eliminar o<br>desperdício de uso",
+    "circleStrokeFill" => "#00FF00",
+    "stroke" => "#AAAA00",
+    "circleStroke" => "#AAAA00",
+    "fill" => "#FFFF00",
+    "x" => 10,
+    "y" => 10
+  )
+),
+"data" => array(
+  array(
+    "id" => "unique_id_1",
+    "text" => "Financeira",
+    "fill" => "#FFFF00",
+    "fontColor" => "#3498DB",
+    "objective" => array(
+      array(
+        array(
+          "id" => "unique_id_2",
+          "text" => "Eliminar o<br>desperdício de uso",
+          "circleStrokeFill" => "#00FF00",
+          "stroke" => "#AAAA00",
+          "circleStroke" => "#AAAA00",
+          "fill" => "#FFFF00"
+        ),
+        array(
+          "id" => "unique_id_3",
+          "text" => "Aumentar a rentabilidade da<br>instituição de forma sustentável",
+          "circleStrokeFill" => "#FF0000",
+          "stroke" => "#AA0000",
+          "circleStroke" => "#AAAA00",
+          "fill" => "#FFFF00"
+        ),
+        array(
+          "id" => "unique_id_4",
+          "text" => "Aumentar a receita de<br>forma diversificada",
+          "circleStrokeFill" => "#FF0000",
+          "stroke" => "#AA0000",
+          "circleStroke" => "#AAAA00",
+          "fill" => "#FFFF00"
+        )
+      )
+    )
+  ),
+  array(
+    "id" => "unique_id_10",
+    "text" => "Mercado e Cliente",
+    "fill" => "#2C3E50",
+    "fontColor" => "#FFFFFF",
+    "objective" => array(
+      array(
+        array(
+          "id" => "unique_id_11",
+          "text" => "Desenvolver a satisfação dos pacientes,<br>Estado, Município e Operadoras",
+          "circleStrokeFill" => "#FFFF00",
+          "fontColor" => "#FFFFFF",
+          "stroke" => "#0000FF"
+        ),
+        array(
+          "id" => "unique_id_12",
+          "text" => "Apresentar uma imagem de<br>resolutividade para os problemas",
+          "circleStrokeFill" => "#FF0000",
+          "fontColor" => "#FFFFFF",
+          "stroke" => "#0000FF"
+        ),
+        array(
+          "id" => "unique_id_13",
+          "text" => "Fidelizar o corpo clínico da instituição",
+          "circleStrokeFill" => "#FF0000",
+          "fontColor" => "#FFFFFF",
+          "stroke" => "#FF0000"
+        )
+      )
+    )
+  ),
+  array(
+    "id" => "unique_id_19",
+    "text" => "Processos internos",
+    "fill" => "#FF7777",
+    "fontColor" => "#FFFFFF",
+    "columns" => array(
+      array(
+        "id" => "unique_id_col_1",
+        "text" => "Gestão de mercado/cliente",
+        "fill" => "#FF7777",
+        "fontColor" => "#FFFFFF"
+      ),
+      array(
+        "id" => "unique_id_col_2",
+        "text" => "Pesquisa e Inovação",
+        "fill" => "#FF7777",
+        "fontColor" => "#FFFFFF"
+      ),
+      array(
+        "id" => "unique_id_col_3",
+        "text" => "Excelência Operacional",
+        "fill" => "#FF7777",
+        "fontColor" => "#FFFFFF"
+      ),
+      array(
+        "id" => "unique_id_col_4",
+        "text" => "Desenvolvimento social",
+        "fill" => "#FF7777",
+        "fontColor" => "#FFFFFF"
+      )
+    ),
+    "objective" => array(
+      array(
+        //Gestão de mercado/cliente
+        array(
+          "id" => "unique_id_21",
+          "text" => "Desenvolver atendimento<br>humanizado no corpo",
+          "circleStrokeFill" => "#FF0000",
+          "stroke" => "#FF0000",
+          "fill" => "#FF7777",
+          "fontColor" => "#FFFFFF"
+        ),
+        //Pesquisa e Inovação
+        array(
+          "id" => "unique_id_23",
+          "text" => "Incentivar o<br>desenvolvimento de novos",
+          "circleStrokeFill" => "#FFFF00",
+          "stroke" => "#FF0000",
+          "fill" => "#FF7777",
+          "fontColor" => "#FFFFFF"
+        ),
+        //Excelência Operacional
+        array(
+          "id" => "unique_id_20",
+          "text" => "Desenvolver a qualidade<br>de atendimento acima dos<br>padrões do mercado.",
+          "circleStrokeFill" => "#FFFF00",
+          "stroke" => "#FF0000",
+          "fill" => "#FF7777",
+          "fontColor" => "#FFFFFF"
+        ),
+        //Desenvolvimento social
+        array(
+          "id" => "unique_id_22",
+          "text" => "Aumentar número de<br>horas dedicadas a<br>projetos",
+          "circleStrokeFill" => "#00FF00",
+          "stroke" => "#FF0000",
+          "fill" => "#FF7777",
+          "fontColor" => "#FFFFFF"
+        )
+      ),
+      array(
+        //Gestão de mercado/cliente
+        array(
+          "id" => "unique_id_25",
+          "text" => "Criar estruturas para atuar<br>também nos segmentos<br>de camada social",
+          "circleStrokeFill" => "#FFFF00",
+          "stroke" => "#FF0000",
+          "fill" => "#FF7777",
+          "fontColor" => "#FFFFFF"
+        ),
+        //Pesquisa e Inovação
+        array(
+          "id" => "unique_id_27",
+          "text" => "Aumentar o número<br>de parcerias e<br>projetos com faculdades",
+          "circleStrokeFill" => "#FF0000",
+          "stroke" => "#FF0000",
+          "fill" => "#FF7777",
+          "fontColor" => "#FFFFFF"
+        ),
+        //Excelência Operacional
+        array(
+          "id" => "unique_id_24",
+          "text" => "Desenvolver a qualidade<br>da instituição de forma<br>continua para garantir<br>certificações adquiridas",
+          "circleStrokeFill" => "#FFFF00",
+          "stroke" => "#FF0000",
+          "fill" => "#FF7777",
+          "fontColor" => "#FFFFFF"
+        ),
+        //Desenvolvimento social
+        array(
+          "id" => "unique_id_26",
+          "text" => "Compartilhar a excelência<br>científica e em gestão com<br>instituições filantrópicas<br>da mesma área",
+          "circleStrokeFill" => "#00FF00",
+          "stroke" => "#FF0000",
+          "fill" => "#FF7777",
+          "fontColor" => "#FFFFFF"
+        ),
+      ),
+      array(
+        array(),
+        //Gestão de mercado/cliente
+        array(
+          "id" => "unique_id_28",
+          "text" => "Criar estreitamento<br>no relacionamento<br>com as...",
+          "circleStrokeFill" => "#FF0000",
+          "stroke" => "#FF0000",
+          "fill" => "#FF7777",
+          "fontColor" => "#FFFFFF"
+        ),
+        array(),
+        //Pesquisa e Inovação
+        array(
+          "id" => "unique_id_29",
+          "text" => "Estimular a criação<br>de trabalhos científicos",
+          "circleStrokeFill" => "#999999",
+          "stroke" => "#FF0000",
+          "fill" => "#FF7777",
+          "fontColor" => "#FFFFFF"
+        )
+      )
+    )
+  ),
+  array(
+    "id" => "unique_id_31",
+    "text" => "Aprendizado e Crescimento",
+    "fill" => "#F781F3",
+    "fontColor" => "#FFFFFF",
+    "columns" => array(
+      array(
+        "id" => "unique_id_col_5",
+        "text" => "Desenvolver o capital humano",
+        "fill" => "#F781F3",
+        "fontColor" => "#FFFFFF"
+      ),
+      array(
+        "id" => "unique_id_col_6",
+        "text" => "Capital organizacional",
+        "fill" => "#F781F3",
+        "fontColor" => "#FFFFFF"
+      ),
+      array(
+        "id" => "unique_id_col_7",
+        "text" => "Capital da organização",
+        "fill" => "#F781F3",
+        "fontColor" => "#FFFFFF"
+      )
+    ),
+    "objective" => array(
+      array(
+        array(
+          "id" => "unique_id_32",
+          "text" => "Desenvolver a<br>motivação e inovação",
+          "circleStrokeFill" => "#FFFF00",
+          "stroke" => "#8904B1",
+          "fill" => "#F781F3",
+          "fontColor" => "#FFFFFF"
+        ),
+        array(
+          "id" => "unique_id_33",
+          "text" => "Desenvolver um clima<br>organizacional mais adequado",
+          "circleStrokeFill" => "#FF0000",
+          "stroke" => "#FF0000",
+          "fill" => "#F781F3",
+          "fontColor" => "#FFFFFF"
+        ),
+        array(
+          "id" => "unique_id_34",
+          "text" => "Alimentar e integrar as<br>informações para ajudar a ...",
+          "circleStrokeFill" => "#FF0000",
+          "stroke" => "#FF0000",
+          "fill" => "#F781F3",
+          "fontColor" => "#FFFFFF"
+        )
+      ),
+      array(
+        array(
+          "id" => "unique_id_35",
+          "text" => "Criar cultura<br>humanizante no corpo",
+          "circleStrokeFill" => "#FFFF00",
+          "stroke" => "#FF0000",
+          "fill" => "#F781F3",
+          "fontColor" => "#FFFFFF"
+        )
+      )
+    )
+  )
+)
+);
 ```
 
-This may be further enhanced in the future.
+Na prática, você vai montar o array de dados com as informações passadas
+pelo banco de dados.
 
+**Cuidado:** Um **ID** deve ser único, começar por letra ou underline, e
+não pode conter espaços ou caracteres especiais. Ele vai virar uma 
+variável JavaScript.
 
-## Support :
+Formato do array de dados:
+```
+$data = array(
+  // Array bidimencional com todos os links
+  // Links são as setas ligando os balões.
+  [ opcional ] "link" => array(
+    array(
+      "id" => String - id único,
+      "link" => array(
+        "from" => String - id do elemento de partida,
+        "to" => String - id do elemento de chegada
+      )
+    ),
+    array(
+      "id" => String - id único,
+      "link" => array(
+        "from" => String - id do elemento de partida,
+        "to" => String - id do elemento de chegada
+      )
+    )
+  ),
+  // Array bidimencional com os elementos soltos
+  // Float são balões flutuantes
+  [ opcional ] "float" => array(
+    array(
+      "id" => String - id único,
+      "text" => String - texto contido no balão,
+      "x" => Unsigned Int - Coordenada x do balão,
+      "y" => Unsigned Int - Coordenada y do balão,
+      "circleStrokeFill" => [ opcional ] String - cor do preenchimento do círculo. Ex: "#00FF00",
+      "stroke" => [ opcional ] String - cor da linha. Ex: "#AAAA00",
+      "circleStroke" => [ opcional ] String - cor da linha do círculo. Ex: "#AAAA00",
+      "fill" => [ opcional ] String - cor do preenchimento. Ex: "#AAAA00"
+    ),
+    array(
+      "id" => String - id único,
+      "text" => String - texto contido no balão,
+      "x" => Unsigned Int - Coordenada x do balão,
+      "y" => Unsigned Int - Coordenada y do balão,
+      "circleStrokeFill" => [ opcional ] String - cor do preenchimento do círculo. Ex: "#00FF00",
+      "stroke" => [ opcional ] String - cor da linha. Ex: "#AAAA00",
+      "circleStroke" => [ opcional ] String - cor da linha do círculo. Ex: "#AAAA00",
+      "fill" => [ opcional ] String - cor do preenchimento. Ex: "#AAAA00"
+    )
+  ),
+  // Dados do gráfico
+  "data" => array(
+    // Dados da perspectiva
+    // Um array por perspectiva
+    array(
+      // Dados da perspectiva
+      "id" => String - id único,
+      "text" => String - texto contido no balão,
+      "fill" => [ opcional ] String - cor do preenchimento. Ex: "#AAAA00",
+      "fontColor" => [ opcional ] String - cor da fonte do texto. Ex: "#3498DB",
+      
+      // A coluna fica entre a perspectiva e o objetivo
+      [ opcional ] "columns" => array(
+        array(
+          "id" => String - id único,
+          "text" => String - texto contido no balão,
+          "fill" => [ opcional ] String - cor do preenchimento. Ex: "#AAAA00",
+          "fontColor" => [ opcional ] String - cor da fonte do texto. Ex: "#3498DB"
+        ),
+        array(
+          "id" => String - id único,
+          "text" => String - texto contido no balão,
+          "fill" => [ opcional ] String - cor do preenchimento. Ex: "#AAAA00",
+          "fontColor" => [ opcional ] String - cor da fonte do texto. Ex: "#3498DB"
+        ),
+        array(
+          "id" => String - id único,
+          "text" => String - texto contido no balão,
+          "fill" => [ opcional ] String - cor do preenchimento. Ex: "#AAAA00",
+          "fontColor" => [ opcional ] String - cor da fonte do texto. Ex: "#3498DB"
+        ),
+        array(
+          "id" => String - id único,
+          "text" => String - texto contido no balão,
+          "fill" => [ opcional ] String - cor do preenchimento. Ex: "#AAAA00",
+          "fontColor" => [ opcional ] String - cor da fonte do texto. Ex: "#3498DB"
+        )
+      ),
+      "objective" => array(
+        // Um array por linha
+        array(
+        
+          // Um array por balão/coluna
+          array(
+            "id" => String - id único,
+            "text" => String - texto contido no balão,
+            "circleStrokeFill" => [ opcional ] String - cor do preenchimento do círculo. Ex: "#00FF00",
+            "stroke" => [ opcional ] String - cor da linha. Ex: "#AAAA00",
+            "circleStroke" => [ opcional ] String - cor da linha do círculo. Ex: "#AAAA00",
+            "fill" => [ opcional ] String - cor do preenchimento. Ex: "#AAAA00"
+          ),
+          
+          // Um array em branco para pular uma coluna.
+          // Atenção, não se pode pular todas as colunas e deixar uma coluna inteira afastada
+          array(),
+          
+          array(
+            "id" => String - id único,
+            "text" => String - texto contido no balão,
+            "circleStrokeFill" => [ opcional ] String - cor do preenchimento do círculo. Ex: "#00FF00",
+            "stroke" => [ opcional ] String - cor da linha. Ex: "#AAAA00",
+            "circleStroke" => [ opcional ] String - cor da linha do círculo. Ex: "#AAAA00",
+            "fill" => [ opcional ] String - cor do preenchimento. Ex: "#AAAA00"
+          )
+        )
+      )
+    ),
+  array(
+      // Dados da perspectiva
+      "id" => String - id único,
+      "text" => String - texto contido no balão,
+      "fill" => [ opcional ] String - cor do preenchimento. Ex: "#AAAA00",
+      "fontColor" => [ opcional ] String - cor da fonte do texto. Ex: "#3498DB",
+      [ opcional ] "columns" => array(
+        array(
+          "id" => String - id único,
+          "text" => String - texto contido no balão,
+          "fill" => [ opcional ] String - cor do preenchimento. Ex: "#AAAA00",
+          "fontColor" => [ opcional ] String - cor da fonte do texto. Ex: "#3498DB"
+        ),
+        array(
+          "id" => String - id único,
+          "text" => String - texto contido no balão,
+          "fill" => [ opcional ] String - cor do preenchimento. Ex: "#AAAA00",
+          "fontColor" => [ opcional ] String - cor da fonte do texto. Ex: "#3498DB"
+        ),
+        array(
+          "id" => String - id único,
+          "text" => String - texto contido no balão,
+          "fill" => [ opcional ] String - cor do preenchimento. Ex: "#AAAA00",
+          "fontColor" => [ opcional ] String - cor da fonte do texto. Ex: "#3498DB"
+        ),
+        array(
+          "id" => String - id único,
+          "text" => String - texto contido no balão,
+          "fill" => [ opcional ] String - cor do preenchimento. Ex: "#AAAA00",
+          "fontColor" => [ opcional ] String - cor da fonte do texto. Ex: "#3498DB"
+        )
+      ),
+      "objective" => array(
+        array(
+          array(
+            "id" => String - id único,
+            "text" => String - texto contido no balão,
+            "circleStrokeFill" => [ opcional ] String - cor do preenchimento do círculo. Ex: "#00FF00",
+            "stroke" => [ opcional ] String - cor da linha. Ex: "#AAAA00",
+            "circleStroke" => [ opcional ] String - cor da linha do círculo. Ex: "#AAAA00",
+            "fill" => [ opcional ] String - cor do preenchimento. Ex: "#AAAA00"
+          ),
+          array(
+            "id" => String - id único,
+            "text" => String - texto contido no balão,
+            "circleStrokeFill" => [ opcional ] String - cor do preenchimento do círculo. Ex: "#00FF00",
+            "stroke" => [ opcional ] String - cor da linha. Ex: "#AAAA00",
+            "circleStroke" => [ opcional ] String - cor da linha do círculo. Ex: "#AAAA00",
+            "fill" => [ opcional ] String - cor do preenchimento. Ex: "#AAAA00"
+          ),
+          array(
+            "id" => String - id único,
+            "text" => String - texto contido no balão,
+            "circleStrokeFill" => [ opcional ] String - cor do preenchimento do círculo. Ex: "#00FF00",
+            "stroke" => [ opcional ] String - cor da linha. Ex: "#AAAA00",
+            "circleStroke" => [ opcional ] String - cor da linha do círculo. Ex: "#AAAA00",
+            "fill" => [ opcional ] String - cor do preenchimento. Ex: "#AAAA00"
+          )
+        )
+      )
+    )
+  )
+);
+```
 
-- Any bugs about Markdown Preview please feel free to report [here][issue].
-- And you are welcome to fork and submit pullrequests.
+## Configurações
 
+Para montar o gráfico, você necessita montar as configurações globais, e
+sempre que necessários, você pode sobrescrever a configuração conforme as
+tabelas abaixo.
 
-## License :
+### Configurações globais
+|--------------------|-------------------------------------------------|
+|fontFamily| Caminho do arquivo de fonte do servidor PHP |
+|perspectiveFontSizeDefault| Tamanho padrão da fonte |
+|perspectiveFontColorDefault| Cor padrão da fonte, ex.: #000000 |
+|perspectiveStrokeDefaultColor| Cor padrão da linha, ex.: #000000 |
+|perspectiveStrokeWidth| Espessura da linha de borda |
+|perspectiveFillDefaultColor| Cor padrão do preenchimento, ex.: #FFFFFF |
+|perspectiveRx| Raio x da curvatura da borda. 0 deixa quadrado, 1 dá uma leve quebra, n > 1 use com cuidado |
+|perspectiveRy| Raio y da curvatura da borda. 0 deixa quadrado, 1 dá uma leve quebra, n > 1 use com cuidado |
+|perspectiveCircleCx| Posição x do círculo indicativo de status. Use Cx = Cy = CR para fazer um círculo no canto superior esquerdo |
+|perspectiveCircleCy| Posição y do círculo indicativo de status. Use Cx = Cy = CR para fazer um círculo no canto superior esquerdo |
+|perspectiveCircleCR| Tamanho do círculo indicativo de status. Use Cx = Cy = CR para fazer um círculo no canto superior esquerdo |
+|perspectiveCircleStroke| Espessura da borda do círculo |
+|perspectiveCircleStrokeWidth| Espessura da linha de borda |
+|perspectiveCircleStrokeFill| Cor de preenchimento padrão do círculo. Ex. #FF0000 |
+|perspectiveSpaceWidthBetweenTextAndBorder| Espaçamento horizontal entre o texto e a borda |
+|perspectiveSpaceHeightBetweenTextAndBorder| Espaçamento vertical entre o texto e a borda |
+|perspectiveSpaceUpper| Espaçamento superior entre os elementos |
+|perspectiveSpaceBottom| Espaçamento inferior entre os elementos |
+|columnsFontSizeDefault| Tamanho padrão da fonte |
+|columnsFontColorDefault| Cor padrão da fonte, ex.: #000000 |
+|columnsStrokeDefaultColor| Cor padrão da linha, ex.: #000000 |
+|columnsStrokeWidth| Espessura da linha de borda |
+|columnsFillDefaultColor| Cor padrão do preenchimento, ex.: #FFFFFF |
+|columnsRx| Raio x da curvatura da borda. 0 deixa quadrado, 1 dá uma leve quebra, n > 1 use com cuidado |
+|columnsRy| Raio y da curvatura da borda. 0 deixa quadrado, 1 dá uma leve quebra, n > 1 use com cuidado |
+|columnsCircleCx| Posição x do círculo indicativo de status. Use Cx = Cy = CR para fazer um círculo no canto superior esquerdo |
+|columnsCircleCy| Posição y do círculo indicativo de status. Use Cx = Cy = CR para fazer um círculo no canto superior esquerdo |
+|columnsCircleCR| Tamanho do círculo indicativo de status. Use Cx = Cy = CR para fazer um círculo no canto superior esquerdo |
+|columnsCircleStroke| Espessura da borda do círculo |
+|columnsCircleStrokeWidth| Espessura da linha de borda |
+|columnsCircleStrokeFill| Cor de preenchimento padrão do círculo. Ex. #FF0000 |
+|columnsSpaceWidthBetweenTextAndBorder| Espaçamento horizontal entre o texto e a borda |
+|columnsSpaceHeightBetweenTextAndBorder| Espaçamento vertical entre o texto e a borda |
+|columnsSpaceWidthBetween| Espaçamento horizontal entre as colunas [obsoleto] |
+|columnsSpaceBottom| Espaçamento inferior entre os elementos |
+|objectivesFontSizeDefault| Tamanho padrão da fonte |
+|objectivesFontColorDefault| Cor padrão da fonte, ex.: #000000 |
+|objectivesStrokeDefaultColor| Cor padrão da linha, ex.: #000000 |
+|objectivesStrokeWidth| Espessura da linha de borda |
+|objectivesFillDefaultColor| Cor padrão do preenchimento, ex.: #FFFFFF |
+|objectivesRx| Raio x da curvatura da borda. 0 deixa quadrado, 1 dá uma leve quebra, n > 1 use com cuidado |
+|objectivesRy| Raio y da curvatura da borda. 0 deixa quadrado, 1 dá uma leve quebra, n > 1 use com cuidado |
+|objectivesCircleCx| Posição x do círculo indicativo de status. Use Cx = Cy = CR para fazer um círculo no canto superior esquerdo |
+|objectivesCircleCy| Posição y do círculo indicativo de status. Use Cx = Cy = CR para fazer um círculo no canto superior esquerdo |
+|objectivesCircleCR| Tamanho do círculo indicativo de status. Use Cx = Cy = CR para fazer um círculo no canto superior esquerdo |
+|objectivesCircleStroke| Espessura da borda do círculo |
+|objectivesCircleStrokeWidth| Cor de preenchimento padrão do círculo. Ex. #FF0000 |
+|objectivesCircleStrokeFill| Cor de preenchimento padrão do círculo. Ex. #FF0000 |
+|objectivesSpaceWidthBetween| Espaçamento horizontal mínimo entre os balões. |
+|objectivesSpaceHeightBetween| Espaçamento vertical mínimo entre os balões. |
+|objectivesSpaceWidthBetweenTextAndBorder| Espaçamento horizontal entre o texto e a borda |
+|objectivesSpaceHeightBetweenTextAndBorder| Espaçamento vertical entre o texto e a borda |
 
-The code is available at github [project][home] under [MIT licence][4].
+### Configurações individuais
+|--------------------|-------------------------------------------------|
+|id|[ obrigatório ] Id único obrigatório para cada elemento. Regra:[a-zA-Z__][a-zA-Z0-9__]* |
+|stroke| [ opcional ] Cor da linha. |
+|fill| [ opcional ] Cor do preenchimento. |
+|strokeWidth| [ opcional ] Espessura da linha |
+|rx| [ opcional ] Raio x da borda |
+|ry| [ opcional ] Raio y da borda |
+|fontSize| [ opcional ] Tamanho da fonte |
+|fontColor| [ opcional ] Cor da fonte |
+|circleCx| [ opcional ] Posição x do círculo. Use Cx = Cy = CR para fazer um círculo no canto superior esquerdo |
+|circleCy| [ opcional ] Posição y do círculo. Use Cx = Cy = CR para fazer um círculo no canto superior esquerdo |
+|circleCR| [ opcional ] Raio do círculo. Use Cx = Cy = CR para fazer um círculo no canto superior esquerdo |
+|circleStroke| [ opcional ] Cor da borda |
+|circleStrokeWidth| [ opcional ] Espessura da linha |
+|circleStrokeFill| [ opcional ] Cor do preenchimento |
 
- [home]: https://github.com/revolunet/sublimetext-markdown-preview
- [3]: https://packagecontrol.io/
- [4]: http://revolunet.mit-license.org
- [5]: https://developer.github.com/v3/markdown/
- [6]: https://help.github.com/articles/github-flavored-markdown/
- [7]: https://github.com/dz0ny/LiveReload-sublimetext2
- [8]: https://github.com/revolunet/sublimetext-markdown-preview/issues/27#issuecomment-11772098
- [9]: https://github.com/revolunet/sublimetext-markdown-preview/issues/78#issuecomment-15644727
- [10]: https://github.com/waylan/Python-Markdown
- [11]: https://packagecontrol.io/installation
- [12]: https://github.com/revolunet/sublimetext-markdown-preview/archive/master.zip
- [issue]: https://github.com/revolunet/sublimetext-markdown-preview/issues
- [settings]: https://github.com/revolunet/sublimetext-markdown-preview/blob/master/MarkdownPreview.sublime-settings
+## Exemplo funcional
+----------------------
+
+```
+<?php
+
+  $data = array(
+    "link" => array(
+      array(
+        "id" => "unique_id_link_1",
+        "link" => array(
+          "from" => "unique_id_2",
+          "to" => "unique_id_3"
+        )
+      ),
+      array(
+        "id" => "unique_id_link_2",
+        "link" => array(
+          "from" => "unique_id_4",
+          "to" => "unique_id_3"
+        )
+      ),
+      array(
+        "id" => "unique_id_link_3",
+        "link" => array(
+          "from" => "unique_id_12",
+          "to" => "unique_id_4"
+        )
+      ),
+      array(
+        "id" => "unique_id_link_4",
+        "link" => array(
+          "from" => "unique_id_11",
+          "to" => "unique_id_12"
+        )
+      ),
+      array(
+        "id" => "unique_id_link_5",
+        "link" => array(
+          "from" => "unique_id_13",
+          "to" => "unique_id_4"
+        )
+      ),
+      array(
+        "id" => "unique_id_link_6",
+        "link" => array(
+          "from" => "unique_id_20",
+          "to" => "unique_id_2"
+        )
+      ),
+      array(
+        "id" => "unique_id_link_7",
+        "link" => array(
+          "from" => "unique_id_20",
+          "to" => "unique_id_12"
+        )
+      ),
+      array(
+        "id" => "unique_id_link_8",
+        "link" => array(
+          "from" => "unique_id_21",
+          "to" => "unique_id_12"
+        )
+      ),
+      array(
+        "id" => "unique_id_link_9",
+        "link" => array(
+          "from" => "unique_id_22",
+          "to" => "unique_id_12"
+        )
+      ),
+      array(
+        "id" => "unique_id_link_10",
+        "link" => array(
+          "from" => "unique_id_23",
+          "to" => "unique_id_12"
+        )
+      ),
+      array(
+        "id" => "unique_id_link_11",
+        "link" => array(
+          "from" => "unique_id_13",
+          "to" => "unique_id_12"
+        )
+      )
+    ),
+    "float" => array(
+      array(
+        "id" => "unique_id_float_1",
+        "text" => "Eliminar o<br>desperdício de uso",
+        "circleStrokeFill" => "#00FF00",
+        "stroke" => "#AAAA00",
+        "circleStroke" => "#AAAA00",
+        "fill" => "#FFFF00",
+        "x" => 10,
+        "y" => 10
+      )
+    ),
+    "data" => array(
+      array(
+        "id" => "unique_id_1",
+        "text" => "Financeira",
+        "fill" => "#FFFF00",
+        "fontColor" => "#3498DB",
+        "objective" => array(
+          array(
+            array(
+              "id" => "unique_id_2",
+              "text" => "Eliminar o<br>desperdício de uso",
+              "circleStrokeFill" => "#00FF00",
+              "stroke" => "#AAAA00",
+              "circleStroke" => "#AAAA00",
+              "fill" => "#FFFF00"
+            ),
+            array(
+              "id" => "unique_id_3",
+              "text" => "Aumentar a rentabilidade da<br>instituição de forma sustentável",
+              "circleStrokeFill" => "#FF0000",
+              "stroke" => "#AA0000",
+              "circleStroke" => "#AAAA00",
+              "fill" => "#FFFF00"
+            ),
+            array(
+              "id" => "unique_id_4",
+              "text" => "Aumentar a receita de<br>forma diversificada",
+              "circleStrokeFill" => "#FF0000",
+              "stroke" => "#AA0000",
+              "circleStroke" => "#AAAA00",
+              "fill" => "#FFFF00"
+            )
+          )
+        )
+      ),
+      array(
+        "id" => "unique_id_10",
+        "text" => "Mercado e Cliente",
+        "fill" => "#2C3E50",
+        "fontColor" => "#FFFFFF",
+        "objective" => array(
+          array(
+            array(
+              "id" => "unique_id_11",
+              "text" => "Desenvolver a satisfação dos pacientes,<br>Estado, Município e Operadoras",
+              "circleStrokeFill" => "#FFFF00",
+              "fontColor" => "#FFFFFF",
+              "stroke" => "#0000FF"
+            ),
+            array(
+              "id" => "unique_id_12",
+              "text" => "Apresentar uma imagem de<br>resolutividade para os problemas",
+              "circleStrokeFill" => "#FF0000",
+              "fontColor" => "#FFFFFF",
+              "stroke" => "#0000FF"
+            ),
+            array(
+              "id" => "unique_id_13",
+              "text" => "Fidelizar o corpo clínico da instituição",
+              "circleStrokeFill" => "#FF0000",
+              "fontColor" => "#FFFFFF",
+              "stroke" => "#FF0000"
+            )
+          )
+        )
+      ),
+      array(
+        "id" => "unique_id_19",
+        "text" => "Processos internos",
+        "fill" => "#FF7777",
+        "fontColor" => "#FFFFFF",
+        "columns" => array(
+          array(
+            "id" => "unique_id_col_1",
+            "text" => "Gestão de mercado/cliente",
+            "fill" => "#FF7777",
+            "fontColor" => "#FFFFFF"
+          ),
+          array(
+            "id" => "unique_id_col_2",
+            "text" => "Pesquisa e Inovação",
+            "fill" => "#FF7777",
+            "fontColor" => "#FFFFFF"
+          ),
+          array(
+            "id" => "unique_id_col_3",
+            "text" => "Excelência Operacional",
+            "fill" => "#FF7777",
+            "fontColor" => "#FFFFFF"
+          ),
+          array(
+            "id" => "unique_id_col_4",
+            "text" => "Desenvolvimento social",
+            "fill" => "#FF7777",
+            "fontColor" => "#FFFFFF"
+          )
+        ),
+        "objective" => array(
+          array(
+            //Gestão de mercado/cliente
+            array(
+              "id" => "unique_id_21",
+              "text" => "Desenvolver atendimento<br>humanizado no corpo",
+              "circleStrokeFill" => "#FF0000",
+              "stroke" => "#FF0000",
+              "fill" => "#FF7777",
+              "fontColor" => "#FFFFFF"
+            ),
+            //Pesquisa e Inovação
+            array(
+              "id" => "unique_id_23",
+              "text" => "Incentivar o<br>desenvolvimento de novos",
+              "circleStrokeFill" => "#FFFF00",
+              "stroke" => "#FF0000",
+              "fill" => "#FF7777",
+              "fontColor" => "#FFFFFF"
+            ),
+            //Excelência Operacional
+            array(
+              "id" => "unique_id_20",
+              "text" => "Desenvolver a qualidade<br>de atendimento acima dos<br>padrões do mercado.",
+              "circleStrokeFill" => "#FFFF00",
+              "stroke" => "#FF0000",
+              "fill" => "#FF7777",
+              "fontColor" => "#FFFFFF"
+            ),
+            //Desenvolvimento social
+            array(
+              "id" => "unique_id_22",
+              "text" => "Aumentar número de<br>horas dedicadas a<br>projetos",
+              "circleStrokeFill" => "#00FF00",
+              "stroke" => "#FF0000",
+              "fill" => "#FF7777",
+              "fontColor" => "#FFFFFF"
+            )
+          ),
+          array(
+            //Gestão de mercado/cliente
+            array(
+              "id" => "unique_id_25",
+              "text" => "Criar estruturas para atuar<br>também nos segmentos<br>de camada social",
+              "circleStrokeFill" => "#FFFF00",
+              "stroke" => "#FF0000",
+              "fill" => "#FF7777",
+              "fontColor" => "#FFFFFF"
+            ),
+            //Pesquisa e Inovação
+            array(
+              "id" => "unique_id_27",
+              "text" => "Aumentar o número<br>de parcerias e<br>projetos com faculdades",
+              "circleStrokeFill" => "#FF0000",
+              "stroke" => "#FF0000",
+              "fill" => "#FF7777",
+              "fontColor" => "#FFFFFF"
+            ),
+            //Excelência Operacional
+            array(
+              "id" => "unique_id_24",
+              "text" => "Desenvolver a qualidade<br>da instituição de forma<br>continua para garantir<br>certificações adquiridas",
+              "circleStrokeFill" => "#FFFF00",
+              "stroke" => "#FF0000",
+              "fill" => "#FF7777",
+              "fontColor" => "#FFFFFF"
+            ),
+            //Desenvolvimento social
+            array(
+              "id" => "unique_id_26",
+              "text" => "Compartilhar a excelência<br>científica e em gestão com<br>instituições filantrópicas<br>da mesma área",
+              "circleStrokeFill" => "#00FF00",
+              "stroke" => "#FF0000",
+              "fill" => "#FF7777",
+              "fontColor" => "#FFFFFF"
+            ),
+          ),
+          array(
+            array(),
+            //Gestão de mercado/cliente
+            array(
+              "id" => "unique_id_28",
+              "text" => "Criar estreitamento<br>no relacionamento<br>com as...",
+              "circleStrokeFill" => "#FF0000",
+              "stroke" => "#FF0000",
+              "fill" => "#FF7777",
+              "fontColor" => "#FFFFFF"
+            ),
+            array(),
+            //Pesquisa e Inovação
+            array(
+              "id" => "unique_id_29",
+              "text" => "Estimular a criação<br>de trabalhos científicos",
+              "circleStrokeFill" => "#999999",
+              "stroke" => "#FF0000",
+              "fill" => "#FF7777",
+              "fontColor" => "#FFFFFF"
+            )
+          )
+        )
+      ),
+      array(
+        "id" => "unique_id_31",
+        "text" => "Aprendizado e Crescimento",
+        "fill" => "#F781F3",
+        "fontColor" => "#FFFFFF",
+        "columns" => array(
+          array(
+            "id" => "unique_id_col_5",
+            "text" => "Desenvolver o capital humano",
+            "fill" => "#F781F3",
+            "fontColor" => "#FFFFFF"
+          ),
+          array(
+            "id" => "unique_id_col_6",
+            "text" => "Capital organizacional",
+            "fill" => "#F781F3",
+            "fontColor" => "#FFFFFF"
+          ),
+          array(
+            "id" => "unique_id_col_7",
+            "text" => "Capital da organização",
+            "fill" => "#F781F3",
+            "fontColor" => "#FFFFFF"
+          )
+        ),
+        "objective" => array(
+          array(
+            array(
+              "id" => "unique_id_32",
+              "text" => "Desenvolver a<br>motivação e inovação",
+              "circleStrokeFill" => "#FFFF00",
+              "stroke" => "#8904B1",
+              "fill" => "#F781F3",
+              "fontColor" => "#FFFFFF"
+            ),
+            array(
+              "id" => "unique_id_33",
+              "text" => "Desenvolver um clima<br>organizacional mais adequado",
+              "circleStrokeFill" => "#FF0000",
+              "stroke" => "#FF0000",
+              "fill" => "#F781F3",
+              "fontColor" => "#FFFFFF"
+            ),
+            array(
+              "id" => "unique_id_34",
+              "text" => "Alimentar e integrar as<br>informações para ajudar a ...",
+              "circleStrokeFill" => "#FF0000",
+              "stroke" => "#FF0000",
+              "fill" => "#F781F3",
+              "fontColor" => "#FFFFFF"
+            )
+          ),
+          array(
+            array(
+              "id" => "unique_id_35",
+              "text" => "Criar cultura<br>humanizante no corpo",
+              "circleStrokeFill" => "#FFFF00",
+              "stroke" => "#FF0000",
+              "fill" => "#F781F3",
+              "fontColor" => "#FFFFFF"
+            )
+          )
+        )
+      )
+    )
+  );
+
+  $fontSizeDefaultLUInt = 12;
+  $spaceWidthBetweenTextAndBorderUInt = 50;
+  $spaceHeightBetweenTextAndBorder = 10;
+  $setup = array(
+    "fontFamily" => "./tahoma.ttf",
+    "perspectiveFontSizeDefault" => $fontSizeDefaultLUInt,
+    "perspectiveFontColorDefault" => "#555555",
+    "perspectiveStrokeDefaultColor" => "#000000",
+    "perspectiveFillDefaultColor" => "#DDDDDD",
+    "perspectiveStrokeWidth" => 0,
+    "perspectiveRx" => 1,
+    "perspectiveRy" => 1,
+    "perspectiveCircleCx" => 7,
+    "perspectiveCircleCy" => 7,
+    "perspectiveCircleCR" => 7,
+    "perspectiveCircleStroke" => "#000000",
+    "perspectiveCircleStrokeWidth" => 2,
+    "perspectiveCircleStrokeFill" => "#00FF00",
+    "perspectiveSpaceWidthBetweenTextAndBorder" => $spaceWidthBetweenTextAndBorderUInt - 10,
+    "perspectiveSpaceHeightBetweenTextAndBorder" => $spaceHeightBetweenTextAndBorder - 10,
+    "perspectiveSpaceUpper" => 20,
+    "perspectiveSpaceBottom" => 10,
+
+    "columnsFontSizeDefault" => $fontSizeDefaultLUInt,
+    "columnsFontColorDefault" => "#5555FF",
+    "columnsStrokeDefaultColor" => "#000000",
+    "columnsFillDefaultColor" => "#DDDDDD",
+    "columnsStrokeWidth" => 0,
+    "columnsRx" => 1,
+    "columnsRy" => 1,
+    "columnsCircleCx" => 7,
+    "columnsCircleCy" => 7,
+    "columnsCircleCR" => 7,
+    "columnsCircleStroke" => "#000000",
+    "columnsCircleStrokeWidth" => 2,
+    "columnsCircleStrokeFill" => "#FFFF00",
+    "columnsSpaceWidthBetweenTextAndBorder" => $spaceWidthBetweenTextAndBorderUInt - 10,
+    "columnsSpaceHeightBetweenTextAndBorder" => $spaceHeightBetweenTextAndBorder - 10,
+    "columnsSpaceWidthBetween" => 30,
+    "columnsSpaceBottom" => 10,
+
+    "objectivesFontSizeDefault" => $fontSizeDefaultLUInt,
+    "objectivesFontColorDefault" => "#3498DB",
+    "objectivesStrokeDefaultColor" => "#000000",
+    "objectivesFillDefaultColor" => "#2C3E50",
+    "objectivesStrokeWidth" => 2,
+    "objectivesRx" => 1,
+    "objectivesRy" => 1,
+    "objectivesCircleCx" => 7,
+    "objectivesCircleCy" => 7,
+    "objectivesCircleCR" => 7,
+    "objectivesCircleStroke" => "#000000",
+    "objectivesCircleStrokeWidth" => 2,
+    "objectivesCircleStrokeFill" => "#00FF00",
+    "objectivesSpaceWidthBetween" => 30,
+    "objectivesSpaceHeightBetween" => 20,
+    "objectivesSpaceWidthBetweenTextAndBorder" => $spaceWidthBetweenTextAndBorderUInt,
+    "objectivesSpaceHeightBetweenTextAndBorder" => $spaceHeightBetweenTextAndBorder
+
+  );
+
+  /*********************************************************************************************************************
+   * Código PHP a ser copiado e colado - início
+   ********************************************************************************************************************/
+  $listElementsToAddLArr = array();
+  $listLinksIdsLArr = array();
+
+  /** [ public ] função principal encarregada de montar o código fonte.
+   *
+   * @param $dataAArr Array com os dados do gráfico.
+   * @param $setupAArr Array com as configurações padrão do gráfico.
+   * @param $listElementsToAddAArr Array em branco, usado como apoio.
+   * @param $listLinksIdsAArr Array em branco, usado como apoio.
+   * @code
+  $(document).ready( function(){ <?php print makeOnReadyFunction( $data, $setup, $listElementsToAddLArr, $listLinksIdsLArr ); ?> });
+   * @endcode
+   * @return string
+   */
+  function makeOnReadyFunction( &$dataAArr, &$setupAArr, &$listElementsToAddAArr, &$listLinksIdsAArr ){
+    $returnLStr = "
+          var graph = new joint.dia.Graph();
+
+          var paper = new joint.dia.Paper({
+            el: $('#paper'),
+            width: 5000,
+            height: 5000,
+            gridSize: 10,
+            model: graph
+          });
+
+          joint.shapes.basic.Rect = joint.shapes.basic.Generic.extend({
+            markup: '<g class=\"rotatable\"><g class=\"scalable\"><rect/></g><text/><svg height=\"90\" width=\"200\"><circle cx=\"7\" cy=\"7\" r=\"7\" stroke=\"black\" stroke-width=\"2\" fill=\"red\" /></svg></g>',
+            defaults: joint.util.deepSupplement({
+              type: 'basic.Rect',
+              attrs: {
+                'rect': { fill: 'white', stroke: 'black', 'follow-scale': true, width: 80, height: 40 },
+                'text': { 'font-size': 14, 'ref-x': .5, 'ref-y': .5, ref: 'rect', 'y-alignment': 'middle', 'x-alignment': 'middle' }
+              }
+            }, joint.shapes.basic.Generic.prototype.defaults)
+          });
+
+         ". makeBalloons( 50, 150, $dataAArr, $setupAArr, $listElementsToAddAArr ). "
+         ". makeLinks( $dataAArr, $listElementsToAddAArr, $listLinksIdsAArr ). "
+          graph.addCells([ ". getListToAdd( $listElementsToAddAArr ) ." ]);
+          var listUpdate = [ ". getListToAdd( $listElementsToAddAArr ) . " ];
+
+          graph.on('change:position', function(cell) {\r\n";
+
+    // has an obstacle been moved? Then reroute the link.
+    foreach( $listLinksIdsAArr as $linkIdLStr ){
+      $returnLStr .= "if (_.contains(listUpdate, cell)) paper.findViewByModel(".$linkIdLStr.").update();\r\n";
+    }
+
+    $returnLStr .= "
+          });
+
+          $('.router-switch').on('click', function(evt) {
+            var router = $(evt.target).data('router');
+            var connector = $(evt.target).data('connector');
+
+            if (router) {
+              link.set('router', { name: router });
+            } else {
+              link.unset('router');
+            }
+
+            link.set('connector', { name: connector });
+          });
+        ";
+
+    return $returnLStr;
+  }
+
+  /** [ private ] Monta parte do código fonte do gráfico.
+   *
+   * @param $xAUInt Int com o posição x do gráfico.
+   * @param $yAUInt Int com o posição y do gráfico.
+   * @param $dataAArr Array com os dados do gráfico.
+   * @param $setupAArr Array com as configurações padrão do gráfico.
+   * @param $listElementsToAddLArr Array em branco, usado como apoio.
+   *
+   * @return string código fonte.
+   */
+  function makeBalloons( $xAUInt, $yAUInt, &$dataAArr, &$setupAArr, &$listElementsToAddLArr ){
+    $returnLStr = "";
+    $borderHeightSFlt = 0;
+
+    $balloonWidthMaxUFlt = 0;
+
+    $xColumnsLArr = array();
+
+    if( @is_array( $dataAArr["float"] ) )
+    {
+      foreach($dataAArr["float"] as $perspectiveKeyLUInt => $perspectiveDataLArr)
+      {
+
+        /*****************************************************************************************************************
+         * Balão de perspectivas.
+         ****************************************************************************************************************/
+        if(isset($perspectiveDataLArr["stroke"]))
+        {
+          $strokeColorLStr = $perspectiveDataLArr["stroke"];
+        }
+        else
+        {
+          $strokeColorLStr = $setupAArr["perspectiveStrokeDefaultColor"];
+        }
+
+        if(isset($perspectiveDataLArr["fill"]))
+        {
+          $perspectiveFillColorLStr = $perspectiveDataLArr["fill"];
+        }
+        else
+        {
+          $perspectiveFillColorLStr = $setupAArr["perspectiveFillDefaultColor"];
+        }
+
+        if(isset($perspectiveDataLArr["strokeWidth"]))
+        {
+          $strokeWidthLUInt = $perspectiveDataLArr["strokeWidth"];
+        }
+        else
+        {
+          $strokeWidthLUInt = $setupAArr["perspectiveStrokeWidth"];
+        }
+
+        if(isset($perspectiveDataLArr["rx"]))
+        {
+          $perspectiveRxLUFlt = $perspectiveDataLArr["rx"];
+        }
+        else
+        {
+          $perspectiveRxLUFlt = $setupAArr["perspectiveRx"];
+        }
+
+        if(isset($perspectiveDataLArr["ry"]))
+        {
+          $perspectiveRyLUFlt = $perspectiveDataLArr["ry"];
+        }
+        else
+        {
+          $perspectiveRyLUFlt = $setupAArr["perspectiveRy"];
+        }
+
+        if(isset($perspectiveDataLArr["fontSize"]))
+        {
+          $perspectiveFontSizeUInt = $perspectiveDataLArr["fontSize"];
+        }
+        else
+        {
+          $perspectiveFontSizeUInt = $setupAArr["perspectiveFontSizeDefault"];
+        }
+
+        if(isset($perspectiveDataLArr["fontColor"]))
+        {
+          $perspectiveFontColorLStr = $perspectiveDataLArr["fontColor"];
+        }
+        else
+        {
+          $perspectiveFontColorLStr = $setupAArr["perspectiveFontColorDefault"];
+        }
+
+        if(isset($perspectiveDataLArr["circleCx"]))
+        {
+          $perspectiveCircleCxUFlt = $perspectiveDataLArr["circleCx"];
+        }
+        else
+        {
+          $perspectiveCircleCxUFlt = $setupAArr["perspectiveCircleCx"];
+        }
+
+        if(isset($perspectiveDataLArr["circleCy"]))
+        {
+          $perspectiveCircleCyUFlt = $perspectiveDataLArr["circleCy"];
+        }
+        else
+        {
+          $perspectiveCircleCyUFlt = $setupAArr["perspectiveCircleCy"];
+        }
+
+        if(isset($perspectiveDataLArr["circleCR"]))
+        {
+          $perspectiveCircleCrUFlt = $perspectiveDataLArr["circleCR"];
+        }
+        else
+        {
+          $perspectiveCircleCrUFlt = $setupAArr["perspectiveCircleCR"];
+        }
+
+        if(isset($perspectiveDataLArr["circleStroke"]))
+        {
+          $perspectiveCircleStrokeUFlt = $perspectiveDataLArr["circleStroke"];
+        }
+        else
+        {
+          $perspectiveCircleStrokeUFlt = $setupAArr["perspectiveCircleStroke"];
+        }
+
+        if(isset($perspectiveDataLArr["circleStrokeWidth"]))
+        {
+          $perspectiveCircleStrokeWidthUFlt = $perspectiveDataLArr["circleStrokeWidth"];
+        }
+        else
+        {
+          $perspectiveCircleStrokeWidthUFlt = $setupAArr["perspectiveCircleStrokeWidth"];
+        }
+
+        if(isset($perspectiveDataLArr["circleStrokeFill"]))
+        {
+          $perspectiveCircleStrokeFillUFlt = $perspectiveDataLArr["circleStrokeFill"];
+        }
+        else
+        {
+          $perspectiveCircleStrokeFillUFlt = $setupAArr["perspectiveCircleStrokeFill"];
+        }
+
+        $listElementsToAddLArr[] = $perspectiveDataLArr["id"];
+
+        $returnLStr .= "        ";
+        $returnLStr .= "joint.shapes.basic.Rect = joint.shapes.basic.Generic.extend({
+            markup: '<g class=\'rotatable\'><g class=\'scalable\'><rect/></g><text/><!--svg height=\'90\' width=\'100\'><circle cx=\'" . $perspectiveCircleCxUFlt . "\' cy=\'" . $perspectiveCircleCyUFlt . "\' r=\'" . $perspectiveCircleCrUFlt . "\' stroke=\'" . $perspectiveCircleStrokeUFlt . "\' stroke-width=\'" . $perspectiveCircleStrokeWidthUFlt . "\' fill=\'" . $perspectiveCircleStrokeFillUFlt . "\' /></svg--></g>',
+            defaults: joint.util.deepSupplement({
+              type: 'basic.Rect',
+              attrs: {
+                'rect': { fill: 'white', stroke: 'black', 'follow-scale': true, width: 80, height: 40 },
+                'text': { 'font-size': 14, 'ref-x': .5, 'ref-y': .5, ref: 'rect', 'y-alignment': 'middle', 'x-alignment': 'middle' }
+              }
+            }, joint.shapes.basic.Generic.prototype.defaults)
+          });\r\n";
+        $returnLStr .= "        ";
+        $returnLStr .= "var " . $perspectiveDataLArr["id"] . " = new joint.shapes.basic.Rect({
+        position : {
+          x : " . $perspectiveDataLArr["x"] . ",
+          y : " . $perspectiveDataLArr["y"] . "
+        },
+        size : {
+          width : " . (getWidthTextSize($perspectiveDataLArr["text"], $setupAArr["fontFamily"], $perspectiveFontSizeUInt) + 2 * $setupAArr["perspectiveSpaceWidthBetweenTextAndBorder"]) . ",
+          height : " . (getHeightTextSize($perspectiveDataLArr["text"], $setupAArr["fontFamily"], $perspectiveFontSizeUInt) + 2 * $setupAArr["perspectiveSpaceHeightBetweenTextAndBorder"]) . "
+        },
+        attrs : {
+          rect: { fill: '" . $perspectiveFillColorLStr . "', rx: " . $perspectiveRxLUFlt . ", ry: " . $perspectiveRyLUFlt . ", 'stroke-width': " . $strokeWidthLUInt . ", stroke: '" . $strokeColorLStr . "' },
+          text: {
+            text: '" . transformText($perspectiveDataLArr["text"]) . "',
+            fill: '" . $perspectiveFontColorLStr . "',
+            'font-size': " . $perspectiveFontSizeUInt . ",
+            'ref-y':.5
+          }
+        }
+      });\r\n";
+      }
+    }
+
+    foreach( $dataAArr["data"] as $perspectiveKeyLUInt => $perspectiveDataLArr ){
+
+      /*****************************************************************************************************************
+       * Balão de rotulos de colunas.
+       ****************************************************************************************************************/
+      if( @is_array( $perspectiveDataLArr[ "columns" ] ) ){
+        foreach( $perspectiveDataLArr[ "columns" ] as $objectiveKeyLArr => $objectiveLArr ){
+          if( isset( $objectiveLArr["fontSize"] ) ){
+            $columnsFontSizeUInt = $objectiveLArr["fontSize"];
+          }
+          else{
+            $columnsFontSizeUInt = $setupAArr["columnsFontSizeDefault"];
+          }
+
+          if( isset( $objectiveLArr["id"] ) ){
+            $balloonWidthMaxUFlt = max( $balloonWidthMaxUFlt, getWidthTextSize($objectiveLArr["text"], $setupAArr["fontFamily"], $columnsFontSizeUInt) );
+          }
+        }
+      }
+
+      /*****************************************************************************************************************
+       * Balão de objetivos.
+       ****************************************************************************************************************/
+
+      $borderWidthSFlt = 0;
+
+      foreach( $perspectiveDataLArr[ "objective" ] as $objectiveKeyLUInt => $objectiveListLArr ){
+        foreach( $objectiveListLArr as $objectiveBalloonKeyUInt => $objectiveBalloonValuesLArr ){
+          if( $objectiveBalloonKeyUInt == 0 ){
+            $borderWidthSFlt = $xAUInt;
+          }
+          else{
+            $borderWidthSFlt += $setupAArr["objectivesSpaceWidthBetween"];
+          }
+
+          if( isset( $objectiveBalloonValuesLArr["fontSize"] ) ){
+            $objectivesFontSizeUInt = $objectiveBalloonValuesLArr["fontSize"];
+          }
+          else{
+            $objectivesFontSizeUInt = $setupAArr["objectivesFontSizeDefault"];
+          }
+
+          if( isset( $objectiveBalloonValuesLArr["id"] ) ){
+            $balloonWidthMaxUFlt = max( $balloonWidthMaxUFlt, getWidthTextSize($objectiveBalloonValuesLArr["text"], $setupAArr["fontFamily"], $objectivesFontSizeUInt) );
+          }
+        }
+      }
+    }
+
+    // Monta o x de cada balão
+
+    $borderWidthSFlt = 0;
+
+    foreach( $dataAArr["data"] as $perspectiveKeyLUInt => $perspectiveDataLArr ){
+
+      foreach( $perspectiveDataLArr[ "objective" ] as $objectiveKeyLUInt => $objectiveListLArr ){
+        foreach( $objectiveListLArr as $objectiveBalloonKeyUInt => $objectiveBalloonValuesLArr ){
+          if( $objectiveBalloonKeyUInt == 0 ){
+            $borderWidthSFlt = $xAUInt;
+          }
+          else{
+            $borderWidthSFlt += $setupAArr["objectivesSpaceWidthBetween"];
+          }
+
+          $xColumnsLArr[$objectiveBalloonKeyUInt] = $borderWidthSFlt;
+
+          $borderWidthSFlt += $balloonWidthMaxUFlt + $setupAArr["objectivesSpaceWidthBetween"] + 2 * $setupAArr["objectivesSpaceWidthBetweenTextAndBorder"];
+        }
+      }
+    }
+
+    foreach( $dataAArr["data"] as $perspectiveKeyLUInt => $perspectiveDataLArr ){
+
+      /*****************************************************************************************************************
+       * Balão de perspectivas.
+       ****************************************************************************************************************/
+      if( $perspectiveKeyLUInt == 0 ){
+        $borderHeightSFlt = $yAUInt;
+        $_borderHSFlt = $borderHeightSFlt;
+      }
+      else{
+        $_borderHSFlt = $borderHeightSFlt + $setupAArr["perspectiveSpaceUpper"];
+      }
+
+      if( isset( $perspectiveDataLArr["stroke"] ) ){
+        $strokeColorLStr = $perspectiveDataLArr["stroke"];
+      }
+      else{
+        $strokeColorLStr = $setupAArr["perspectiveStrokeDefaultColor"];
+      }
+
+      if( isset( $perspectiveDataLArr["fill"] ) ){
+        $perspectiveFillColorLStr = $perspectiveDataLArr["fill"];
+      }
+      else{
+        $perspectiveFillColorLStr = $setupAArr["perspectiveFillDefaultColor"];
+      }
+
+      if( isset( $perspectiveDataLArr["strokeWidth"] ) ){
+        $strokeWidthLUInt = $perspectiveDataLArr["strokeWidth"];
+      }
+      else{
+        $strokeWidthLUInt = $setupAArr["perspectiveStrokeWidth"];
+      }
+
+      if( isset( $perspectiveDataLArr["rx"] ) )
+      {
+        $perspectiveRxLUFlt = $perspectiveDataLArr["rx"];
+      }
+      else{
+        $perspectiveRxLUFlt = $setupAArr["perspectiveRx"];
+      }
+
+      if( isset( $perspectiveDataLArr["ry"] ) )
+      {
+        $perspectiveRyLUFlt = $perspectiveDataLArr["ry"];
+      }
+      else{
+        $perspectiveRyLUFlt = $setupAArr["perspectiveRy"];
+      }
+
+      if( isset( $perspectiveDataLArr["fontSize"] ) ){
+        $perspectiveFontSizeUInt = $perspectiveDataLArr["fontSize"];
+      }
+      else{
+        $perspectiveFontSizeUInt = $setupAArr["perspectiveFontSizeDefault"];
+      }
+
+      if( isset( $perspectiveDataLArr["fontColor"] ) ){
+        $perspectiveFontColorLStr = $perspectiveDataLArr["fontColor"];
+      }
+      else{
+        $perspectiveFontColorLStr = $setupAArr["perspectiveFontColorDefault"];
+      }
+
+      if( isset( $perspectiveDataLArr["circleCx"] ) ){
+        $perspectiveCircleCxUFlt = $perspectiveDataLArr["circleCx"];
+      }
+      else{
+        $perspectiveCircleCxUFlt = $setupAArr["perspectiveCircleCx"];
+      }
+
+      if( isset( $perspectiveDataLArr["circleCy"] ) ){
+        $perspectiveCircleCyUFlt = $perspectiveDataLArr["circleCy"];
+      }
+      else{
+        $perspectiveCircleCyUFlt = $setupAArr["perspectiveCircleCy"];
+      }
+
+      if( isset( $perspectiveDataLArr["circleCR"] ) ){
+        $perspectiveCircleCrUFlt = $perspectiveDataLArr["circleCR"];
+      }
+      else{
+        $perspectiveCircleCrUFlt = $setupAArr["perspectiveCircleCR"];
+      }
+
+      if( isset( $perspectiveDataLArr["circleStroke"] ) ){
+        $perspectiveCircleStrokeUFlt = $perspectiveDataLArr["circleStroke"];
+      }
+      else{
+        $perspectiveCircleStrokeUFlt = $setupAArr["perspectiveCircleStroke"];
+      }
+
+      if( isset( $perspectiveDataLArr["circleStrokeWidth"] ) ){
+        $perspectiveCircleStrokeWidthUFlt = $perspectiveDataLArr["circleStrokeWidth"];
+      }
+      else{
+        $perspectiveCircleStrokeWidthUFlt = $setupAArr["perspectiveCircleStrokeWidth"];
+      }
+
+      if( isset( $perspectiveDataLArr["circleStrokeFill"] ) ){
+        $perspectiveCircleStrokeFillUFlt = $perspectiveDataLArr["circleStrokeFill"];
+      }
+      else{
+        $perspectiveCircleStrokeFillUFlt = $setupAArr["perspectiveCircleStrokeFill"];
+      }
+
+      $listElementsToAddLArr[] = $perspectiveDataLArr["id"];
+
+      $returnLStr .= "        ";
+      $returnLStr .= "joint.shapes.basic.Rect = joint.shapes.basic.Generic.extend({
+            markup: '<g class=\'rotatable\'><g class=\'scalable\'><rect/></g><text/><!--svg height=\'90\' width=\'100\'><circle cx=\'" . $perspectiveCircleCxUFlt . "\' cy=\'" . $perspectiveCircleCyUFlt . "\' r=\'" . $perspectiveCircleCrUFlt . "\' stroke=\'" . $perspectiveCircleStrokeUFlt . "\' stroke-width=\'" . $perspectiveCircleStrokeWidthUFlt . "\' fill=\'" . $perspectiveCircleStrokeFillUFlt . "\' /></svg--></g>',
+            defaults: joint.util.deepSupplement({
+              type: 'basic.Rect',
+              attrs: {
+                'rect': { fill: 'white', stroke: 'black', 'follow-scale': true, width: 80, height: 40 },
+                'text': { 'font-size': 14, 'ref-x': .5, 'ref-y': .5, ref: 'rect', 'y-alignment': 'middle', 'x-alignment': 'middle' }
+              }
+            }, joint.shapes.basic.Generic.prototype.defaults)
+          });\r\n";
+      $returnLStr .= "        ";
+      $returnLStr .= "var " . $perspectiveDataLArr["id"] . " = new joint.shapes.basic.Rect({
+        position : {
+          x : " . $xAUInt . ",
+          y : " . $_borderHSFlt . "
+        },
+        size : {
+          width : " . ( getWidthTextSize($perspectiveDataLArr["text"], $setupAArr["fontFamily"], $perspectiveFontSizeUInt) + 2 * $setupAArr["perspectiveSpaceWidthBetweenTextAndBorder"] ) . ",
+          height : " . ( getHeightTextSize($perspectiveDataLArr["text"], $setupAArr["fontFamily"], $perspectiveFontSizeUInt) + 2 * $setupAArr["perspectiveSpaceHeightBetweenTextAndBorder"] ) . "
+        },
+        attrs : {
+          rect: { fill: '" . $perspectiveFillColorLStr . "', rx: " . $perspectiveRxLUFlt . ", ry: " . $perspectiveRyLUFlt . ", 'stroke-width': " . $strokeWidthLUInt . ", stroke: '" . $strokeColorLStr . "' },
+          text: {
+            text: '" . transformText($perspectiveDataLArr["text"]) . "',
+            fill: '" . $perspectiveFontColorLStr . "',
+            'font-size': " . $perspectiveFontSizeUInt . ",
+            'ref-y':.5
+          }
+        }
+      });\r\n";
+
+      if( $perspectiveKeyLUInt == 0 ){
+        $borderHeightSFlt += getHeightTextSize($perspectiveDataLArr["text"], $setupAArr["fontFamily"], $perspectiveFontSizeUInt) + $setupAArr[ "perspectiveSpaceBottom" ] + 2 * $setupAArr["perspectiveSpaceHeightBetweenTextAndBorder"];
+      }
+      else{
+        $borderHeightSFlt += getHeightTextSize($perspectiveDataLArr["text"], $setupAArr["fontFamily"], $perspectiveFontSizeUInt) + $setupAArr[ "perspectiveSpaceBottom" ] + $setupAArr["perspectiveSpaceUpper"] + 2 * $setupAArr["perspectiveSpaceHeightBetweenTextAndBorder"];
+      }
+
+      /*****************************************************************************************************************
+       * Balão de rotulos de colunas.
+       ****************************************************************************************************************/
+      if( @is_array( $perspectiveDataLArr[ "columns" ] ) ){
+        $borderHMaxSFlt = 0;
+        $borderWidthSFlt = $xAUInt;
+
+        foreach( $perspectiveDataLArr[ "columns" ] as $objectiveKeyLArr => $objectiveLArr ){
+          if( !isset( $objectiveLArr["id"] ) ){
+            continue;
+          }
+
+          if( isset( $objectiveLArr["stroke"] ) ){
+            $strokeColorLStr = $objectiveLArr["stroke"];
+          }
+          else{
+            $strokeColorLStr = $setupAArr["columnsStrokeDefaultColor"];
+          }
+
+          if( isset( $objectiveLArr["fill"] ) ){
+            $columnsFillColorLStr = $objectiveLArr["fill"];
+          }
+          else{
+            $columnsFillColorLStr = $setupAArr["columnsFillDefaultColor"];
+          }
+
+          if( isset( $objectiveLArr["strokeWidth"] ) ){
+            $strokeWidthLUInt = $objectiveLArr["strokeWidth"];
+          }
+          else{
+            $strokeWidthLUInt = $setupAArr["columnsStrokeWidth"];
+          }
+
+          if( isset( $objectiveLArr["rx"] ) )
+          {
+            $columnsRxLUFlt = $objectiveLArr["rx"];
+          }
+          else{
+            $columnsRxLUFlt = $setupAArr["columnsRx"];
+          }
+
+          if( isset( $objectiveLArr["ry"] ) )
+          {
+            $columnsRyLUFlt = $objectiveLArr["ry"];
+          }
+          else{
+            $columnsRyLUFlt = $setupAArr["columnsRy"];
+          }
+
+          if( isset( $objectiveLArr["fontSize"] ) ){
+            $columnsFontSizeUInt = $objectiveLArr["fontSize"];
+          }
+          else{
+            $columnsFontSizeUInt = $setupAArr["columnsFontSizeDefault"];
+          }
+
+          if( isset( $objectiveLArr["fontColor"] ) ){
+            $columnsFontColorLStr = $objectiveLArr["fontColor"];
+          }
+          else{
+            $columnsFontColorLStr = $setupAArr["columnsFontColorDefault"];
+          }
+
+          if( isset( $columnsDataLArr["circleCx"] ) ){
+            $columnsCircleCxUFlt = $columnsDataLArr["circleCx"];
+          }
+          else{
+            $columnsCircleCxUFlt = $setupAArr["columnsCircleCx"];
+          }
+
+          if( isset( $columnsDataLArr["circleCy"] ) ){
+            $columnsCircleCyUFlt = $columnsDataLArr["circleCy"];
+          }
+          else{
+            $columnsCircleCyUFlt = $setupAArr["columnsCircleCy"];
+          }
+
+          if( isset( $columnsDataLArr["circleCR"] ) ){
+            $columnsCircleCrUFlt = $columnsDataLArr["circleCR"];
+          }
+          else{
+            $columnsCircleCrUFlt = $setupAArr["columnsCircleCR"];
+          }
+
+          if( isset( $columnsDataLArr["circleStroke"] ) ){
+            $columnsCircleStrokeUFlt = $columnsDataLArr["circleStroke"];
+          }
+          else{
+            $columnsCircleStrokeUFlt = $setupAArr["columnsCircleStroke"];
+          }
+
+          if( isset( $columnsDataLArr["circleStrokeWidth"] ) ){
+            $columnsCircleStrokeWidthUFlt = $columnsDataLArr["circleStrokeWidth"];
+          }
+          else{
+            $columnsCircleStrokeWidthUFlt = $setupAArr["columnsCircleStrokeWidth"];
+          }
+
+          if( isset( $columnsDataLArr["circleStrokeFill"] ) ){
+            $columnsCircleStrokeFillUFlt = $columnsDataLArr["circleStrokeFill"];
+          }
+          else{
+            $columnsCircleStrokeFillUFlt = $setupAArr["columnsCircleStrokeFill"];
+          }
+
+          $listElementsToAddLArr[] = $objectiveLArr["id"];
+
+          $returnLStr .= "        ";
+          $returnLStr .= "joint.shapes.basic.Rect = joint.shapes.basic.Generic.extend({
+            markup: '<g class=\'rotatable\'><g class=\'scalable\'><rect/></g><text/><!--svg height=\'90\' width=\'100\'><circle cx=\'" . $columnsCircleCxUFlt . "\' cy=\'" . $columnsCircleCyUFlt . "\' r=\'" . $columnsCircleCrUFlt . "\' stroke=\'" . $columnsCircleStrokeUFlt . "\' stroke-width=\'" . $columnsCircleStrokeWidthUFlt . "\' fill=\'" . $columnsCircleStrokeFillUFlt . "\' /></svg--></g>',
+            defaults: joint.util.deepSupplement({
+              type: 'basic.Rect',
+              attrs: {
+                'rect': { fill: 'white', stroke: 'black', 'follow-scale': true, width: 80, height: 40 },
+                'text': { 'font-size': 14, 'ref-x': .5, 'ref-y': .5, ref: 'rect', 'y-alignment': 'middle', 'x-alignment': 'middle' }
+              }
+            }, joint.shapes.basic.Generic.prototype.defaults)
+          });\r\n";
+          $returnLStr .= "        ";
+          $returnLStr .= "var " . $objectiveLArr["id"] . " = new joint.shapes.basic.Rect({
+            position : {
+              x : " . ($xColumnsLArr[$objectiveKeyLArr]) . ",
+              y : " . $borderHeightSFlt . "
+            },
+            size : {
+              width : " . ( getWidthTextSize($objectiveLArr["text"], $setupAArr["fontFamily"], $columnsFontSizeUInt) + 2 * $setupAArr["columnsSpaceWidthBetweenTextAndBorder"] ) . ",
+              height : " . ( getHeightTextSize($objectiveLArr["text"], $setupAArr["fontFamily"], $columnsFontSizeUInt) + 2 * $setupAArr["columnsSpaceHeightBetweenTextAndBorder"] ) . "
+            },
+            attrs : {
+              rect: { fill: '" . $columnsFillColorLStr . "', rx: " . $columnsRxLUFlt . ", ry: " . $columnsRyLUFlt . ", 'stroke-width': " . $strokeWidthLUInt . ", stroke: '" . $strokeColorLStr . "' },
+              text: {
+                text: '" . transformText($objectiveLArr["text"]) . "',
+                fill: '" . $columnsFontColorLStr . "',
+                'font-size': " . $columnsFontSizeUInt . ",
+                'ref-y':.5
+              }
+            }
+          });\r\n";
+
+          $borderHMaxSFlt = max( $borderHMaxSFlt, getHeightTextSize($objectiveLArr["text"], $setupAArr["fontFamily"], $columnsFontSizeUInt) + $setupAArr["columnsSpaceBottom"] + 2 * $setupAArr["columnsSpaceHeightBetweenTextAndBorder"] );
+
+          $borderWidthSFlt += $balloonWidthMaxUFlt + $setupAArr["objectivesSpaceWidthBetween"] + 2 * $setupAArr["objectivesSpaceWidthBetweenTextAndBorder"];
+        }
+
+        $borderHeightSFlt += $borderHMaxSFlt;
+      }
+
+      /*****************************************************************************************************************
+       * Balão de objetivos.
+       ****************************************************************************************************************/
+      foreach( $perspectiveDataLArr[ "objective" ] as $objectiveKeyLUInt => $objectiveListLArr ){
+
+        $borderWidthSFlt = $xAUInt;
+        $borderHMaxSFlt = 0;
+
+        foreach( $objectiveListLArr as $objectiveBalloonKeyUInt => $objectiveBalloonValuesLArr ){
+          if( !isset( $objectiveBalloonValuesLArr["id"] ) ){
+            continue;
+          }
+
+          if( $objectiveBalloonKeyUInt == 0 ){
+            $borderWidthSFlt = $xAUInt;
+          }
+          else{
+            $borderWidthSFlt += $setupAArr["objectivesSpaceWidthBetween"];
+          }
+
+          if( isset( $objectiveBalloonValuesLArr["stroke"] ) ){
+            $strokeColorLStr = $objectiveBalloonValuesLArr["stroke"];
+          }
+          else{
+            $strokeColorLStr = $setupAArr["objectivesStrokeDefaultColor"];
+          }
+
+          if( isset( $objectiveBalloonValuesLArr["fill"] ) ){
+            $objectivesFillColorLStr = $objectiveBalloonValuesLArr["fill"];
+          }
+          else{
+            $objectivesFillColorLStr = $setupAArr["objectivesFillDefaultColor"];
+          }
+
+          if( isset( $objectiveBalloonValuesLArr["strokeWidth"] ) ){
+            $strokeWidthLUInt = $objectiveBalloonValuesLArr["strokeWidth"];
+          }
+          else{
+            $strokeWidthLUInt = $setupAArr["objectivesStrokeWidth"];
+          }
+
+          if( isset( $objectiveBalloonValuesLArr["rx"] ) )
+          {
+            $objectivesRxLUFlt = $objectiveBalloonValuesLArr["rx"];
+          }
+          else{
+            $objectivesRxLUFlt = $setupAArr["objectivesRx"];
+          }
+
+          if( isset( $objectiveBalloonValuesLArr["ry"] ) )
+          {
+            $objectivesRyLUFlt = $objectiveBalloonValuesLArr["ry"];
+          }
+          else{
+            $objectivesRyLUFlt = $setupAArr["objectivesRy"];
+          }
+
+          if( isset( $objectiveBalloonValuesLArr["fontSize"] ) ){
+            $objectivesFontSizeUInt = $objectiveBalloonValuesLArr["fontSize"];
+          }
+          else{
+            $objectivesFontSizeUInt = $setupAArr["objectivesFontSizeDefault"];
+          }
+
+          if( isset( $objectiveBalloonValuesLArr["fontColor"] ) ){
+            $objectivesFontColorLStr = $objectiveBalloonValuesLArr["fontColor"];
+          }
+          else{
+            $objectivesFontColorLStr = $setupAArr["objectivesFontColorDefault"];
+          }
+
+          if( isset( $objectiveBalloonValuesLArr["circleCx"] ) ){
+            $objectivesCircleCxUFlt = $objectiveBalloonValuesLArr["circleCx"];
+          }
+          else{
+            $objectivesCircleCxUFlt = $setupAArr["objectivesCircleCx"];
+          }
+
+          if( isset( $objectiveBalloonValuesLArr["circleCy"] ) ){
+            $objectivesCircleCyUFlt = $objectiveBalloonValuesLArr["circleCy"];
+          }
+          else{
+            $objectivesCircleCyUFlt = $setupAArr["objectivesCircleCy"];
+          }
+
+          if( isset( $objectiveBalloonValuesLArr["circleCR"] ) ){
+            $objectivesCircleCrUFlt = $objectiveBalloonValuesLArr["circleCR"];
+          }
+          else{
+            $objectivesCircleCrUFlt = $setupAArr["objectivesCircleCR"];
+          }
+
+          if( isset( $objectiveBalloonValuesLArr["circleStroke"] ) ){
+            $objectivesCircleStrokeUFlt = $objectiveBalloonValuesLArr["circleStroke"];
+          }
+          else{
+            $objectivesCircleStrokeUFlt = $setupAArr["objectivesCircleStroke"];
+          }
+
+          if( isset( $objectiveBalloonValuesLArr["circleStrokeWidth"] ) ){
+            $objectivesCircleStrokeWidthUFlt = $objectiveBalloonValuesLArr["circleStrokeWidth"];
+          }
+          else{
+            $objectivesCircleStrokeWidthUFlt = $setupAArr["objectivesCircleStrokeWidth"];
+          }
+
+          if( isset( $objectiveBalloonValuesLArr["circleStrokeFill"] ) ){
+            $objectivesCircleStrokeFillUFlt = $objectiveBalloonValuesLArr["circleStrokeFill"];
+          }
+          else{
+            $objectivesCircleStrokeFillUFlt = $setupAArr["objectivesCircleStrokeFill"];
+          }
+
+          $listElementsToAddLArr[] = $objectiveBalloonValuesLArr["id"];
+
+          $returnLStr .= "        ";
+          $returnLStr .= "joint.shapes.basic.Rect = joint.shapes.basic.Generic.extend({
+            markup: '<g class=\'rotatable\'><g class=\'scalable\'><rect/></g><text/><svg height=\'90\' width=\'100\'><circle cx=\'" . $objectivesCircleCxUFlt . "\' cy=\'" . $objectivesCircleCyUFlt . "\' r=\'" . $objectivesCircleCrUFlt . "\' stroke=\'" . $objectivesCircleStrokeUFlt . "\' stroke-width=\'" . $objectivesCircleStrokeWidthUFlt . "\' fill=\'" . $objectivesCircleStrokeFillUFlt . "\' /></svg></g>',
+            defaults: joint.util.deepSupplement({
+              type: 'basic.Rect',
+              attrs: {
+                'rect': { fill: 'white', stroke: 'black', 'follow-scale': true, width: 80, height: 40 },
+                'text': { 'font-size': 14, 'ref-x': .5, 'ref-y': .5, ref: 'rect', 'y-alignment': 'middle', 'x-alignment': 'middle' }
+              }
+            }, joint.shapes.basic.Generic.prototype.defaults)
+          });\r\n";
+          $returnLStr .= "        ";
+          $returnLStr .= "var " . $objectiveBalloonValuesLArr["id"] . " = new joint.shapes.basic.Rect({
+            position : {
+              x : " . ($xColumnsLArr[$objectiveBalloonKeyUInt]) . ",
+              y : " . $borderHeightSFlt . "
+            },
+            size : {
+              width : " . ( getWidthTextSize($objectiveBalloonValuesLArr["text"], $setupAArr["fontFamily"], $objectivesFontSizeUInt) + 2 * $setupAArr["objectivesSpaceWidthBetweenTextAndBorder"] ) . ",
+              height : " . ( getHeightTextSize($objectiveBalloonValuesLArr["text"], $setupAArr["fontFamily"], $objectivesFontSizeUInt) + 2 * $setupAArr["objectivesSpaceHeightBetweenTextAndBorder"] ) . "
+            },
+            attrs : {
+              rect: { fill: '" . $objectivesFillColorLStr . "', rx: " . $objectivesRxLUFlt . ", ry: " . $objectivesRyLUFlt . ", 'stroke-width': " . $strokeWidthLUInt . ", stroke: '" . $strokeColorLStr ."' },
+              text: {
+                text: '" . transformText($objectiveBalloonValuesLArr["text"]) . "',
+                fill: '" . $objectivesFontColorLStr . "',
+                'font-size': " . $objectivesFontSizeUInt . ",
+                'ref-y':.5
+              }
+            }
+          });\r\n";
+
+          $borderHMaxSFlt = max( $borderHMaxSFlt, ( getHeightTextSize($objectiveBalloonValuesLArr["text"], $setupAArr["fontFamily"], $objectivesFontSizeUInt) + 2 * $setupAArr["objectivesSpaceHeightBetween"] + 2 * $setupAArr["objectivesSpaceHeightBetweenTextAndBorder"] ) );
+          $borderWidthSFlt += $balloonWidthMaxUFlt + $setupAArr["objectivesSpaceWidthBetween"] + 2 * $setupAArr["objectivesSpaceWidthBetweenTextAndBorder"];
+        }
+
+        $borderHeightSFlt += $borderHMaxSFlt;
+      }
+    }
+
+    return $returnLStr;
+  }
+
+  /** [ private ] Converte as quebras de linha html em \r\n.
+   * @param $textAStr String com o texto original
+   *
+   * @return String com o texto pronto para ser inserido em funções JavaScript
+   */
+  function transformText( $textAStr ){
+    $textAStr = preg_replace("/<br.*?>[\r\n]*/", "\\r\\n", $textAStr );
+    return str_replace("'", "\\'", $textAStr );
+  }
+
+  /** [ private ] Retorna o tamanho horizontal do texto em pixels.
+   *  [Não havia tempo e eu fui pela forma mais rapida.]
+   * @param $textAStr String texto convertido para o formato JavaScript.
+   * @param $fontFamilyAStr String com o caminho do arquivo da fonte.
+   * @param $fontSizeAUInt Int com o tamanho da fonte.
+   * @see transformText()
+   *
+   * @return Float com o tamanho do texto em pixels
+   */
+  function getWidthTextSize( &$textAStr, &$fontFamilyAStr, &$fontSizeAUInt ){
+    $textLStr = preg_replace( "/<br.*?>[\r\n]*/", "\r\n", $textAStr );
+
+    $charUInt = 0;
+    $textInLinesLArr = explode( "\r\n", $textLStr );
+    foreach( $textInLinesLArr as $lineLArr ){
+      $charUInt = max( $charUInt, strlen( $lineLArr ) );
+    }
+
+    $fontDataLArr = imageftbbox ( $fontSizeAUInt, 0.0, $fontFamilyAStr, $textLStr );
+
+    //O tamanho da fonte calculado pelo PHP não bate com o tamanho da fonte no navegador.
+    return ( $fontDataLArr[ 2 ] - $fontDataLArr[ 0 ] ) - ( $charUInt * 2.5 );
+  }
+
+  /** [ private ] Retorna o tamanho horizontal do texto em pixels.
+   *  [Não havia tempo e eu fui pela forma mais rapida.]
+   * @param $textAStr String texto convertido para o formato JavaScript.
+   * @param $fontFamilyAStr String com o caminho do arquivo da fonte.
+   * @param $fontSizeAUInt Int com o tamanho da fonte.
+   * @see transformText()
+   *
+   * @return Float com o tamanho do texto em pixels
+   */
+  function getHeightTextSize( &$textAStr, &$fontFamilyAStr, &$fontSizeAUInt ){
+    $textLStr = preg_replace( "/<br.*?>[\r\n]*/", "\r\n", $textAStr );
+    preg_match_all( "%([\r\n]+)%si", $textLStr, $matchesArr );
+    $fontDataLArr = imageftbbox ( $fontSizeAUInt, 0.0, $fontFamilyAStr, $textLStr );
+
+    //O tamanho da fonte calculado pelo PHP não bate com o tamanho da fonte no navegador.
+    return ( $fontDataLArr[ 1 ] - $fontDataLArr[ 7 ] ) - ( ( count($matchesArr[0]) - 1 ) * 12 );
+  }
+
+  /** [ private ] Retorna a lista com todos os ids/nomes de variáveis geradas pelo código.
+   *
+   * @param $listElementsToAddLArr
+   *
+   * @return string com todos os nomes de variáveis separados por vírgula.
+   */
+  function getListToAdd( &$listElementsToAddLArr ){
+    return implode( ", ", $listElementsToAddLArr );
+  }
+
+  /** [ private ] monta o código referente aos links
+   * @param $dataAArr
+   * @param $listElementsToAddAArr
+   * @param $listLinksIdsAArr
+   *
+   * @return string
+   */
+  function makeLinks( &$dataAArr, &$listElementsToAddAArr, &$listLinksIdsAArr ){
+    $returnLStr  = "";
+
+    foreach( $dataAArr["link"] as $linkKeyUInt => $linkValueLArr )
+    {
+      $listElementsToAddAArr[] = $linkValueLArr["id"];
+      $listLinksIdsAArr[] = $linkValueLArr["id"];
+
+      $returnLStr .= "";
+      $returnLStr .= "var " . $linkValueLArr["id"] . " = new joint.dia.Link({
+        source: { id: " . $linkValueLArr["link"]["from"] . ".id },
+        target: { id: " . $linkValueLArr["link"]["to"] . ".id },
+        router: { name: 'manhattan' },
+        connector: { name: 'rounded' },
+        attrs: {
+          '.connection': {
+            stroke: '#333333',
+            'stroke-width': 3
+          },
+          '.marker-target': {
+            fill: '#333333',
+            d: 'M 10 0 L 0 5 L 10 10 z'
+          }
+        }
+      });\r\n";
+    }
+
+    return $returnLStr;
+  }
+  /*********************************************************************************************************************
+   * Código PHP a ser copiado e colado - fim
+   ********************************************************************************************************************/
+?><html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="./css/dev/joint.css" />
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/lodash.min.js"></script>
+    <script src="./js/backbone-min.js"></script>
+    <script src="./js/dev/joint.js"></script>
+    <script>
+      $(document).ready(
+        function() {
+          <?php print makeOnReadyFunction( $data, $setup, $listElementsToAddLArr, $listLinksIdsLArr ); ?>
+        });
+    </script>
+  </head>
+  <body>
+    <dic id='paper' />
+  </body>
+</html>
+```
